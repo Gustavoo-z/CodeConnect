@@ -120,6 +120,12 @@ textarea {
 
 .lista-tags {
     display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+}
+
+.remove-tag {
+    cursor: pointer;
 }
 
 .container-itens-botoes {

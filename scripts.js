@@ -36,3 +36,38 @@ inputUpload.addEventListener('change', async (evento) => {
         }
     }
 })
+
+const categoria = document.getElementById('categoria');
+const listaTags = document.getElementById('lista-tags');
+
+categoria.addEventListener("keypress", (evento) => {
+    if (evento.key === "Enter") {
+        evento.preventDefault();
+        const tagTexto = categoria.value.trim();
+        if (tagTexto !== "" && tagsDisponiveis.includes(tagTexto)) {
+            const novaCategoria = document.createElement("li");
+            novaCategoria.innerHTML = `<p>${tagTexto}</p> <img src="/img/close-black.svg" class="remove-tag">`
+            listaTags.appendChild(novaCategoria);
+            categoria.value = "";
+        } else {
+            alert('Tag inválida!');
+        }
+    }
+})
+
+listaTags.addEventListener("click", (evento) => {
+    if (evento.target.classList.contains("remove-tag")) {
+        const tagParaRemover = evento.target.parentElement;
+        listaTags.removeChild(tagParaRemover);
+    }
+})
+
+const tagsDisponiveis = ["Front-end", "Programação", "Data Science", "Full-stack", "HTML", "CSS", "Javascript"];
+
+async function verificarTags(tagTexto) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(tagsDisponiveis.includes(tagTexto));
+        }, 1000)
+    })
+}
