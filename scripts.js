@@ -37,23 +37,7 @@ inputUpload.addEventListener('change', async (evento) => {
     }
 })
 
-const categoria = document.getElementById('categoria');
 const listaTags = document.getElementById('lista-tags');
-
-categoria.addEventListener("keypress", (evento) => {
-    if (evento.key === "Enter") {
-        evento.preventDefault();
-        const tagTexto = categoria.value.trim();
-        if (tagTexto !== "" && tagsDisponiveis.includes(tagTexto)) {
-            const novaCategoria = document.createElement("li");
-            novaCategoria.innerHTML = `<p>${tagTexto}</p> <img src="/img/close-black.svg" class="remove-tag">`
-            listaTags.appendChild(novaCategoria);
-            categoria.value = "";
-        } else {
-            alert('Tag inválida!');
-        }
-    }
-})
 
 listaTags.addEventListener("click", (evento) => {
     if (evento.target.classList.contains("remove-tag")) {
@@ -69,5 +53,52 @@ async function verificarTags(tagTexto) {
         setTimeout(() => {
             resolve(tagsDisponiveis.includes(tagTexto));
         }, 1000)
+    })
+}
+const categoria = document.getElementById('categoria');
+
+categoria.addEventListener("keypress", (evento) => {
+    if (evento.key === "Enter") {
+        evento.preventDefault();
+        const tagTexto = categoria.value.trim();
+        if (tagTexto !== "" && tagsDisponiveis.includes(tagTexto)) {
+            const tagsUsadas = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
+            if(tagsUsadas.includes(tagTexto)) {
+                alert('Tag já utilizada!');
+                categoria.value = "";
+            } else {
+                const novaCategoria = document.createElement("li");
+                novaCategoria.innerHTML = `<p class="nome-tag">${tagTexto}</p> <img src="/img/close-black.svg" class="remove-tag">`
+                listaTags.appendChild(novaCategoria);
+                categoria.value = "";
+            }
+        } else {
+            alert('Tag inválida!');
+        }
+    }
+})
+
+const botaoPublicar = document.querySelector('.botao-publicar');
+
+botaoPublicar.addEventListener('click', async (evento) => {
+    evento.preventDefault();
+    const NomeProjeto = document.getElementById('nome').value;
+    const DescricaoProjeto = document.getElementById('descricao').value;
+    const tagsUsadas = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
+
+    console.log(NomeProjeto, DescricaoProjeto, tagsUsadas);
+})
+
+async function publicarProjeto(NomeProjeto, DescricaoProjeto, tagsUsadas) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            const FunctionOk = Math.random() > 0.5;
+
+            if (FunctionOk) {
+                resolve("Projeto publicado com sucesso!")
+            } else {
+                reject("Erro ao publicar o projeto.")
+            }
+        }, 2000)
     })
 }
