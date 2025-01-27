@@ -82,14 +82,21 @@ const botaoPublicar = document.querySelector('.botao-publicar');
 
 botaoPublicar.addEventListener('click', async (evento) => {
     evento.preventDefault();
-    const NomeProjeto = document.getElementById('nome').value;
-    const DescricaoProjeto = document.getElementById('descricao').value;
+    const nomeProjeto = document.getElementById('nome').value;
+    const descricaoProjeto = document.getElementById('descricao').value;
     const tagsUsadas = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
 
-    console.log(NomeProjeto, DescricaoProjeto, tagsUsadas);
+    try {
+        const mensagem = await publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas);
+        console.log(mensagem);
+        alert(mensagem);
+    } catch (error) {
+        console.log(error);
+        alert(error);
+    }
 })
 
-async function publicarProjeto(NomeProjeto, DescricaoProjeto, tagsUsadas) {
+async function publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
             const FunctionOk = Math.random() > 0.5;
