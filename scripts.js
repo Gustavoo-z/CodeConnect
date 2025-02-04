@@ -78,24 +78,6 @@ categoria.addEventListener("keypress", (evento) => {
     }
 })
 
-const botaoPublicar = document.querySelector('.botao-publicar');
-
-botaoPublicar.addEventListener('click', async (evento) => {
-    evento.preventDefault();
-    const nomeProjeto = document.getElementById('nome').value;
-    const descricaoProjeto = document.getElementById('descricao').value;
-    const tagsUsadas = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
-
-    try {
-        const mensagem = await publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas);
-        console.log(mensagem);
-        alert(mensagem);
-    } catch (error) {
-        console.log(error);
-        alert(error);
-    }
-})
-
 async function publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas) {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -108,4 +90,52 @@ async function publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas) {
             }
         }, 2000)
     })
+}
+
+const botaoPublicar = document.querySelector('.botao-publicar');
+
+botaoPublicar.addEventListener('click', async (evento) => {
+    evento.preventDefault();
+    const nomeProjeto = document.getElementById('nome').value;
+    if(nomeProjeto === '') {
+        alert('Preencha o nome do projeto.');
+        return;
+    }
+    const descricaoProjeto = document.getElementById('descricao').value;
+    if(descricaoProjeto === '') {
+        alert('Preencha a descrição do projeto.');
+        return;
+    }
+    const tagsUsadas = Array.from(listaTags.querySelectorAll("p")).map((tag) => tag.textContent);
+    if(tagsUsadas <= 0) {
+        alert('Coloque pelo menos uma tag.');
+        return;
+    }
+
+    try {
+        const mensagem = await publicarProjeto(nomeProjeto, descricaoProjeto, tagsUsadas);
+        console.log(mensagem);
+        alert(mensagem);
+        limparCampos();
+    } catch (error) {
+        console.log(error);
+        alert(error);
+    }
+})
+
+const botaoDescartar = document.querySelector('.botao-descartar');
+
+botaoDescartar.addEventListener('click', (evento) => {
+    evento.preventDefault();
+    limparCampos();
+})
+
+function limparCampos() {
+    const formulario = document.querySelector('form');
+    formulario.reset();
+
+    imagemPrincipal.src = '/img/imagem1.png'
+    nomeDaImagem.textContent = 'image_projeto.png'
+
+    listaTags.innerHTML = '';
 }

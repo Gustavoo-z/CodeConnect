@@ -219,6 +219,7 @@ textarea {
     font-size: 18px;
     position: relative;
     cursor: pointer;
+    padding-left: 0;
 }
 
 .container-upload-imagem button::after {
